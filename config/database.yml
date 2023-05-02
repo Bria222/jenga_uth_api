@@ -17,12 +17,11 @@
 default: &default
   adapter: postgresql
   encoding: unicode
+  user: postgres
+  host: localhost
+  password: brian
   port: 5432
-  username: postgres
-  password: Fe@rLes$237
 
-  # For details on connection pooling, see Rails configuration guide
-  # https://guides.rubyonrails.org/configuring.html#database-pooling
   pool: <%= ENV.fetch("RAILS_MAX_THREADS") { 5 } %>
 
 development:
@@ -30,7 +29,7 @@ development:
   database: house_development
   port: 5432
   username: postgres
-  password: Fe@rLes$237
+  password: brian
 
   # The specified database role being used to connect to postgres.
   # To create additional roles in postgres see `$ createuser --help`.
@@ -66,7 +65,7 @@ test:
   database: house_test
   port: 5432
   username: postgres
-  password: Fe@rLes$237
+  password: brian
 
 # As with config/credentials.yml, you never want to store sensitive information,
 # like your database password, in your source code. If your source code is
@@ -93,4 +92,3 @@ production:
   database: house_production
   port: 5432
   url: <%= ENV["DATABASE_URL"] %>
-
