@@ -83,6 +83,7 @@ GEM
       reline (>= 0.3.1)
     erubi (1.11.0)
     ffi (1.15.5-x64-mingw-ucrt)
+    ffi (1.15.5-x64-mingw32)
     globalid (1.0.0)
       activesupport (>= 5.0)
     i18n (1.12.0)
@@ -94,6 +95,7 @@ GEM
     irb (1.5.1)
       reline (>= 0.3.0)
     jsonapi-renderer (0.2.2)
+    jwt (2.7.0)
     loofah (2.19.0)
       crass (~> 1.0.2)
       nokogiri (>= 1.5.9)
@@ -116,7 +118,10 @@ GEM
     nio4r (2.5.8)
     nokogiri (1.13.9-x64-mingw-ucrt)
       racc (~> 1.4)
+    nokogiri (1.13.9-x64-mingw32)
+      racc (~> 1.4)
     pg (1.4.5-x64-mingw-ucrt)
+    pg (1.4.5-x64-mingw32)
     puma (5.6.5)
       nio4r (~> 2.0)
     racc (1.6.0)
@@ -169,12 +174,14 @@ GEM
 
 PLATFORMS
   x64-mingw-ucrt
+  x64-mingw32
 
 DEPENDENCIES
   active_model_serializers
   bootsnap
   debug
   image_processing (~> 1.2)
+  jwt
   pg (~> 1.1)
   puma (~> 5.0)
   rack-cors
@@ -182,7 +189,7 @@ DEPENDENCIES
   tzinfo-data
 
 RUBY VERSION
-   ruby 3.1.2p20
+   ruby 3.0.5p211
 
 BUNDLED WITH
-   2.3.25
+   2.4.7

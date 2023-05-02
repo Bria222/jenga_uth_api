@@ -1,4 +1,5 @@
 class Api::V1::UsersController < ApplicationController
+  before_action :authorize_request, except: :create
   def index
     @users = User.order('created_at desc')
     if @users
@@ -20,7 +21,10 @@ class Api::V1::UsersController < ApplicationController
   def create
     @user = User.new(user_params)
     if @user.save
-      render json: @user,status: 201
+      token = JsonWebToken.encode(user_id: @user.id)
+      time = Time.now + 24.hours.to_i
+      render json: { token:token, exp: time.strftime('%m-%d-%Y %H:%M'),
+                     user: @user }, status: :ok
     else
       render json: @user.errors.full_messages, status: 500
     end

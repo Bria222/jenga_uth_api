@@ -17,23 +17,26 @@
 default: &default
   adapter: postgresql
   encoding: unicode
-  user: postgres
-  host: localhost
-  password: brian
   port: 5432
+  username: postgres
+  password: Fe@rLes$237
+
   # For details on connection pooling, see Rails configuration guide
   # https://guides.rubyonrails.org/configuring.html#database-pooling
   pool: <%= ENV.fetch("RAILS_MAX_THREADS") { 5 } %>
 
 development:
   <<: *default
-  database: cimeza_backend_API_development
+  database: house_development
+  port: 5432
+  username: postgres
+  password: Fe@rLes$237
 
   # The specified database role being used to connect to postgres.
   # To create additional roles in postgres see `$ createuser --help`.
   # When left blank, postgres will use the default role. This is
   # the same name as the operating system user running Rails.
-  #username: cimeza_backend_API
+  #username: hello_rails_backend
 
   # The password associated with the postgres role (username).
   #password:
@@ -57,11 +60,13 @@ development:
   #min_messages: notice
 
 # Warning: The database defined as "test" will be erased and
-# re-generated from your development database when you run "rake".
 # Do not set this db to the same as development or production.
 test:
   <<: *default
-  database: cimeza_backend_API_test
+  database: house_test
+  port: 5432
+  username: postgres
+  password: Fe@rLes$237
 
 # As with config/credentials.yml, you never want to store sensitive information,
 # like your database password, in your source code. If your source code is
@@ -78,14 +83,14 @@ test:
 # URL environment variable explicitly:
 #
 #   production:
-    url: <%= ENV["MY_APP_DATABASE_URL"] %>
+#     url: <%= ENV["MY_APP_DATABASE_URL"] %>
 #
 # Read https://guides.rubyonrails.org/configuring.html#configuring-a-database
 # for a full overview on how database connection configuration can be specified.
 #
 production:
   <<: *default
+  database: house_production
+  port: 5432
   url: <%= ENV["DATABASE_URL"] %>
-  database: cimeza_backend_API_production
-  username: cimeza_backend_API
-  password: <%= ENV["CIMEZA_BACKEND_API_DATABASE_PASSWORD"] %>
+
