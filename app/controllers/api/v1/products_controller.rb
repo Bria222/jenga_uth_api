@@ -1,5 +1,5 @@
 class Api::V1::ProductsController < ApplicationController
-  # before_action :authorize_request, except: :create
+  before_action :authorize_request, except: :index
   def index
     @products = Product.order('created_at desc').includes(:image_attachment)
     if @products
