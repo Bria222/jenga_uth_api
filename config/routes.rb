@@ -6,7 +6,7 @@ Rails.application.routes.draw do
       post '/user/add', to: 'users#create'
       delete '/user/delete/:id', to: 'users#destroy'
       patch '/user/update/:id', to: 'users#update'
-
+      post '/user/login', to: 'authentication#login'
 
       get '/products', to: 'products#index' do
       get :image, on: :member 

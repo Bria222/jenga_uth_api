@@ -1,5 +1,5 @@
 class Api::V1::UsersController < ApplicationController
-  before_action :authorize_request, except: :create
+  # before_action :authorize_request, except: :create
   def index
     @users = User.order('created_at desc')
     if @users
