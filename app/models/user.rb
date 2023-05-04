@@ -3,4 +3,12 @@ class User < ApplicationRecord
     validates :email, uniqueness: true, presence: true
     validates :password,  presence: true
 
+    def admin 
+     role == "admin"
+    end
+
+    def supplier
+      role == "supplier"
+    end
+
 end

@@ -19,12 +19,16 @@ class Api::V1::ProductsController < ApplicationController
   end
 
   def create
+    unless !current_user.admin || !current_user.supplier
     @product = Product.new(product_params)
     if @product.save
     render json: @product, status: 201
     else
       render json: @product.errors.full_messages, status: 500
     end
+  else
+    render json: { error: 'You are not authorized to perform this action' }, status: :unauthorized
+  end
   end
 
   def destroy
