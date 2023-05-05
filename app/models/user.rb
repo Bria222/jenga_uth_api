@@ -3,11 +3,11 @@ class User < ApplicationRecord
     validates :email, uniqueness: true, presence: true
     validates :password,  presence: true
 
-    def admin 
+    def admin?
      role == "admin"
     end
 
-    def supplier
+    def supplier?
       role == "supplier"
     end
 
