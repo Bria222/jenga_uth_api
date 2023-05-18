@@ -4,6 +4,7 @@ class Api::V1::ProductsController < ApplicationController
   def index
     @products = Product.order(created_at: :desc).includes(:image_attachment)
     render json: @products, status: :ok
+    
   end
 
   def show
