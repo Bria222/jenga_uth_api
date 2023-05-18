@@ -2,52 +2,52 @@ class Api::V1::ProductsController < ApplicationController
   before_action :authorize_request, except: [:index, :categories]
 
   def index
-    @products = Product.order('created_at desc').includes(:image_attachment)
-    if @products
-      render json: @products, status: :ok
-    else
-      render json: @products.errors.full_messages, status: :bad_request
-    end
+    @products = Product.order(created_at: :desc).includes(:image_attachment)
+    render json: @products, status: :ok
   end
 
   def show
-    @product = Product.where(id: params[:id])
+    @product = Product.find_by(id: params[:id])
     if @product
       render json: @product, status: :ok
     else
-      render json:'no product was found', status: 404
+      render json: { error: 'Product not found' }, status: :not_found
     end
   end
 
   def create
     if current_user.admin? || current_user.supplier?
-      @product = Product.create(product_params)
-      if @product.valid?
-        render json: @product, status: 201
+      @product = Product.new(product_params)
+      if @product.save
+        render json: @product, status: :created
       else
-        render json: { errors: @product.errors.full_messages }, status: 400
+        render json: { errors: @product.errors.full_messages }, status: :bad_request
       end
     else 
-      render json: { message: "Unauthorized" }, status: 401
+      render json: { message: 'Unauthorized' }, status: :unauthorized
     end
   end
 
-
   def destroy
-    @product = Product.find_by_id(params[:id])
-    if @product.destroy
-       render json: 'product deleted successfully', status: 200
+    @product = Product.find_by(id: params[:id])
+    if @product
+      @product.destroy
+      render json: { message: 'Product deleted successfully' }, status: :ok
     else
-       render json: 'unable to delete product check and try again', status: unprocessable_entity
+      render json: { error: 'Product not found' }, status: :not_found
     end
   end
 
   def update
-    @product = Product.find(params[:id])
-    if @product .update(product_params)
-      render json: 'product updated successfully'
+    @product = Product.find_by(id: params[:id])
+    if @product
+      if @product.update(product_params)
+        render json: { message: 'Product updated successfully' }, status: :ok
+      else
+        render json: { errors: @product.errors.full_messages }, status: :unprocessable_entity
+      end
     else
-      render json: @product .errors.full_messages, status: :unprocessable_entity
+      render json: { error: 'Product not found' }, status: :not_found
     end
   end
 
@@ -56,11 +56,11 @@ class Api::V1::ProductsController < ApplicationController
     render json: @categories, status: :ok
   end
 
-private
+  private
 
-def product_params
-  params.permit(:name, :description, :price, :product_type, :discount, :units, :category, :image)
-  # params.require(:product).permit(:name, :description, :price, :product_type, :discount, :units, :category, :image)
-end
-
+  def product_params
+    params.permit(:name, :description, :price, :product_type, :discount, :units, :category_id, :image)
+    # If the params are wrapped under a 'product' key, use the following line instead:
+    # params.require(:product).permit(:name, :description, :price, :product_type, :discount, :units, :category, :image)
+  end
 end

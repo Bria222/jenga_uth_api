@@ -19,7 +19,13 @@ Rails.application.routes.draw do
       post '/products/add', to: 'products#create'
       delete '/products/delete/:id', to: 'products#destroy'
       patch '/products/update/:id', to: 'products#update'
-      get '/products/categories', to: 'products#categories' # New route for categories
+      
+      # categories
+      get '/categories', to: 'categories#index'
+      get '/categories/:id', to: 'categories#show'
+      post '/categories/add', to: 'categories#create'
+      delete '/categories/delete/:id', to: 'categories#destroy'
+      patch '/categories/update/:id', to: 'categories#update'
     end
   end
 end
