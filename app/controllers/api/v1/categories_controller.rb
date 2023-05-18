@@ -1,10 +1,16 @@
 class Api::V1::CategoriesController < ApplicationController
-  before_action :authorize_request, except: [:index, :categories]
+  before_action :authorize_request, except: :index
 
   def index
-    @categories = Category.order(created_at: :desc).includes(:product)
-    render json: @categories, status: :ok
+    @categories = Category.order('created_at desc').includes(:products)
+    if @categories
+      render json: @categories, status: :ok
+    else
+      render json: { error: @categories.errors.full_messages }, status: :bad_request
+    end
   end
+
+
 
   def show
     @category = Category.find_by(id: params[:id])
