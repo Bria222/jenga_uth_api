@@ -1,5 +1,6 @@
 class Api::V1::ProductsController < ApplicationController
-  before_action :authorize_request, except: :index
+  before_action :authorize_request, except: [:index, :categories]
+
   def index
     @products = Product.order('created_at desc').includes(:image_attachment)
     if @products
@@ -48,6 +49,11 @@ class Api::V1::ProductsController < ApplicationController
     else
       render json: @product .errors.full_messages, status: :unprocessable_entity
     end
+  end
+
+  def categories
+    @categories = Product.distinct.pluck(:category)
+    render json: @categories, status: :ok
   end
 
 private
