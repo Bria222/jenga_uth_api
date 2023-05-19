@@ -2,8 +2,14 @@ class Api::V1::CategoriesController < ApplicationController
   before_action :authorize_request, except: :index
 
   def index
-    @categories = Category.order('created_at desc').includes(:products)
+    @categories = Category.includes(:products).all
     if @categories
+      @categories = @categories.map do |category|
+        {
+         category: category.attributes, 
+        products: category.products.map(&:attributes)
+        }
+      end
       render json: @categories, status: :ok
     else
       render json: { error: @categories.errors.full_messages }, status: :bad_request
