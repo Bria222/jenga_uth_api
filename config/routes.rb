@@ -26,6 +26,13 @@ Rails.application.routes.draw do
       post '/categories/add', to: 'categories#create'
       delete '/categories/delete/:id', to: 'categories#destroy'
       patch '/categories/update/:id', to: 'categories#update'
+
+      # supplier
+      get '/suppliers', to: 'suppliers#index'
+      get '/suppliers/:id', to: 'suppliers#show'
+      post '/suppliers/add', to: 'suppliers#create'
+      delete '/suppliers/delete/:id', to: 'suppliers#destroy'
+      patch '/suppliers/update/:id', to: 'suppliers#update'
     end
   end
 end
