@@ -33,6 +33,7 @@ Rails.application.routes.draw do
       post '/suppliers/add', to: 'suppliers#create'
       delete '/suppliers/delete/:id', to: 'suppliers#destroy'
       patch '/suppliers/update/:id', to: 'suppliers#update'
+
     end
   end
 end

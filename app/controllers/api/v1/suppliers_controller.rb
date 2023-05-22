@@ -1,8 +1,14 @@
 class Api::V1::SuppliersController < ApplicationController
-  # before_action :authorize_request, except: :create
+   before_action :authorize_request
   def index
-    @suppliers = Supplier.order('created_at desc')
+    @suppliers = Supplier.includes(:user).all
     if @suppliers
+      @suppliers = @suppliers.map do |supplier|
+        {
+          supplier_info: supplier.user,
+          company_info: supplier
+        }
+      end
       render json: @suppliers, status: :ok
     else
       render json: @suppliers.errors.full_messages, status: :bad_request
@@ -19,16 +25,18 @@ class Api::V1::SuppliersController < ApplicationController
   end
 
   def create
-    @supllier = Supplier.new(supplier_params)
+    p current_user.id
+    @supplier = current_user.build_supplier(supplier_params)
     if @supplier.save
-      
+       @supplier = {
+           supplier_info: current_user,
+           company_info: @supplier
+       }
       render json: @supplier, status: :ok
     else
       render json: @supplier.errors.full_messages, status: 500
     end
-
   end
-
   def destroy
     @supllier = Supplier.find_by_id(params[:id])
     if @supllier.destroy
@@ -51,7 +59,7 @@ class Api::V1::SuppliersController < ApplicationController
 
  def supplier_params
   # params.require(:user).permit(:name, :email, :password)
-  params.permit(:company_name, :id_number, :address,:street, :user_id)
+  params.permit(:company_name, :id_number, :address, :street)
 end
 
 end
