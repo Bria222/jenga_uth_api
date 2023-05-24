@@ -59,7 +59,6 @@ ActiveRecord::Schema[7.0].define(version: 2023_05_22_141702) do
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.bigint "category_id", null: false
-    t.json "images"
     t.index ["category_id"], name: "index_products_on_category_id"
   end
 
