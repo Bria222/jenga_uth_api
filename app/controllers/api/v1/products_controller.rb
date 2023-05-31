@@ -9,11 +9,7 @@ class Api::V1::ProductsController < ApplicationController
 
   def show
     @product = Product.find_by(id: params[:id])
-    if @product
-      render json: @product, status: :ok
-    else
-      render json: { error: 'Product not found' }, status: :not_found
-    end
+    render json: @product.as_json(include: :product_images)
   end
 
   def create
@@ -60,8 +56,6 @@ class Api::V1::ProductsController < ApplicationController
   private
 
   def product_params
-    params.permit(:name, :description, :price, :product_type, :discount, :units, :category_id, :image)
-    # If the params are wrapped under a 'product' key, use the following line instead:
-    # params.require(:product).permit(:name, :description, :price, :product_type, :discount, :units, :category, :image)
+    params.permit(:name, :description, :price, :product_type, :discount, :units, :category_id, product_images: [])
   end
 end
