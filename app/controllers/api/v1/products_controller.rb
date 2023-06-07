@@ -1,11 +1,10 @@
 class Api::V1::ProductsController < ApplicationController
-  before_action :authorize_request, except: [:index, :categories, :show]
+  before_action :authorize_request, except: [:index, :categories, :show, :fetch_by_category]
 
   def index
-  @products = Product.order(created_at: :desc).includes(:product_images_attachments, :category)
-  render json: @products, include: :category, status: :ok
-end
-
+    @products = Product.order(created_at: :desc).includes(:product_images_attachments, :category)
+    render json: @products, include: :category, status: :ok
+  end
 
   def show
     @product = Product.find_by(id: params[:id])
@@ -20,7 +19,7 @@ end
       else
         render json: { errors: @product.errors.full_messages }, status: :bad_request
       end
-    else 
+    else
       render json: { message: 'Unauthorized' }, status: :unauthorized
     end
   end
@@ -53,10 +52,16 @@ end
     render json: @categories, status: :ok
   end
 
+  def fetch_by_category
+  @products = Product.joins(:category).where(categories: { name: params[:category] }).order(created_at: :desc)
+  render json: @products, include: :category, status: :ok
+end
+
+
+
   private
 
   def product_params
-  params.permit(:name, :description, :price,  :units, :category_id, :discount_percentage, :rating, :stock, :brand, product_images: [])
-end
-
+    params.permit(:name, :description, :price, :units, :category_id, :discount_percentage, :rating, :stock, :brand, product_images: [])
+  end
 end
