@@ -1,11 +1,11 @@
 class Api::V1::ProductsController < ApplicationController
-  before_action :authorize_request, except: [:index, :categories]
+  before_action :authorize_request, except: [:index, :categories, :show]
 
   def index
-    @products = Product.order(created_at: :desc).includes(:product_images_attachments)
-    render json: @products, status: :ok
-    
-  end
+  @products = Product.order(created_at: :desc).includes(:product_images_attachments, :category)
+  render json: @products, include: :category, status: :ok
+end
+
 
   def show
     @product = Product.find_by(id: params[:id])
@@ -56,6 +56,7 @@ class Api::V1::ProductsController < ApplicationController
   private
 
   def product_params
-    params.permit(:name, :description, :price, :product_type, :discount, :units, :category_id, product_images: [])
-  end
+  params.permit(:name, :description, :price, :product_type, :units, :category_id, :discount_percentage, :rating, :stock, :brand, product_images: [])
+end
+
 end
