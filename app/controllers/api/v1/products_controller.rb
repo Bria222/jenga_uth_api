@@ -56,7 +56,7 @@ end
   private
 
   def product_params
-  params.permit(:name, :description, :price, :product_type, :units, :category_id, :discount_percentage, :rating, :stock, :brand, product_images: [])
+  params.permit(:name, :description, :price,  :units, :category_id, :discount_percentage, :rating, :stock, :brand, product_images: [])
 end
 
 end
