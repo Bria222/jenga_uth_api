@@ -2,7 +2,7 @@ class Api::V1::ProductsController < ApplicationController
   before_action :authorize_request, except: [:index, :categories]
 
   def index
-    @products = Product.order(created_at: :desc).includes(:image_attachment)
+    @products = Product.order(created_at: :desc).includes(:product_images_attachments)
     render json: @products, status: :ok
     
   end
