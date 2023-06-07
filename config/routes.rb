@@ -17,6 +17,7 @@ Rails.application.routes.draw do
       get '/products/:id', to: 'products#show' do
         get :image, on: :member
       end
+     
       post '/products/add', to: 'products#create'
       delete '/products/delete/:id', to: 'products#destroy'
       patch '/products/update/:id', to: 'products#update'

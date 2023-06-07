@@ -1,5 +1,5 @@
 class Api::V1::ProductsController < ApplicationController
-  before_action :authorize_request, except: [:index, :categories, :show, :fetch_by_category]
+  before_action :authorize_request, except: [:index, :categories, :show, :fetch_by_category, :search]
 
   def index
     @products = Product.order(created_at: :desc).includes(:product_images_attachments, :category)
@@ -8,7 +8,11 @@ class Api::V1::ProductsController < ApplicationController
 
   def show
     @product = Product.find_by(id: params[:id])
-    render json: @product.as_json(include: :product_images)
+    if @product
+      render json: @product.as_json(include: :product_images), status: :ok
+    else
+      render json: { error: 'Product not found' }, status: :not_found
+    end
   end
 
   def create
@@ -53,11 +57,11 @@ class Api::V1::ProductsController < ApplicationController
   end
 
   def fetch_by_category
-  @products = Product.joins(:category).where(categories: { name: params[:category] }).order(created_at: :desc)
-  render json: @products, include: :category, status: :ok
-end
+    @products = Product.joins(:category).where(categories: { name: params[:category] }).order(created_at: :desc)
+    render json: @products, include: :category, status: :ok
+  end
 
-
+  
 
   private
 
