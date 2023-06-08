@@ -9,10 +9,11 @@ class Api::V1::ProductsController < ApplicationController
   def show
     @product = Product.find_by(id: params[:id])
     if @product
-      render json: @product.as_json(include: :product_images), status: :ok
+      render json: @product, status: :ok
     else
       render json: { error: 'Product not found' }, status: :not_found
     end
+
   end
 
   def create
